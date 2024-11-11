@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Button, Modal, TextInput, FlatList, TouchableOpacity } from 'react-native';
-import { stylesforVersionManagement } from '../../styles/styles1';
+import { stylesforVersionManagement } from '../../styles/styles';
 import { createNewVersionManagementEntry } from '../services';
-import { Picker } from '@react-native-picker/picker'; 
+import { Picker } from '@react-native-picker/picker';
 
 const VersionManagement = () => {
   const [entries, setEntries] = useState([]);
