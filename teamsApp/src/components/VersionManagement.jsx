@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Modal, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { createNewVersionManagementEntry, getAllVersionManagementEntries } from '../../Services/VersionManagementService';
 import { Picker } from '@react-native-picker/picker';
-import { getUsers } from '../../Services/UserService';  
+import { getUsers } from '../../Services/UserService';
 import { stylesforVersionManagement } from '../../styles/styles';
 
 const VersionManagement = () => {

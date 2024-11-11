@@ -1101,6 +1101,8 @@ export const stylesforDailyReport = StyleSheet.create({
         borderRadius: 5,
         height: 57,
         marginBottom: 5,
+        marginTop: 500,
+
     },
     header: {
         color: '#316cb5',
@@ -1137,6 +1139,7 @@ export const stylesforDailyReport = StyleSheet.create({
         marginBottom: 5,
         borderColor: 'gray',
         borderRadius: 5,
+
     },
     rowinput: {
         borderWidth: 1,
@@ -1406,5 +1409,47 @@ export const stylesforVersionManagement = StyleSheet.create({
         fontSize: 14,
         color: '#666',
         marginTop: 5,
+    },
+});
+
+export const stylesforUsers = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        marginTop: 50,
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 20,
+        color: '#ffffff',
+    },
+    card: {
+        backgroundColor: 'teal',
+        padding: 15,
+        borderRadius: 8,
+        marginBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+        elevation: 5,
+    },
+    userName: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: 'black',
+    },
+    picker: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 4,
+        paddingHorizontal: 10,
+    },
+    pickerItem: {
+        color: '#000000',
     },
 });

@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Sidebar from './Sidebar';
 import VersionManagement from './VersionManagement';
 import Section from '../components/Sections';
+import AppVersionManagement from './AppVersionManagement';
+import Users from './Users';
 import { stylesforHeader } from '../../styles/styles';
 
 const Header = () => {
@@ -16,7 +18,7 @@ const Header = () => {
 
   const selectSection = (section) => {
     setSelectedScreen(section);
-    setSidebarVisible(false); 
+    setSidebarVisible(false);
   };
 
   return (
@@ -34,6 +36,9 @@ const Header = () => {
 
       {selectedScreen === 'Version Management' && <VersionManagement />}
       {selectedScreen === 'Section' && <Section />}
+      {selectedScreen === 'App Version Management' && <AppVersionManagement />}
+      {selectedScreen === 'Users' && <Users />}
+
     </View>
   );
 };
