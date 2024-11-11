@@ -13,11 +13,11 @@ const DailyReport = () => {
     const [status, setStatus] = useState('');
     const [userId, setUserId] = useState('');
     const [tasks, setTasks] = useState([]);
-    const [availableTasks, setAvailableTasks] = useState([]); // Available tasks for selection
+    const [availableTasks, setAvailableTasks] = useState([]); 
     const [users, setUsers] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [customTask, setCustomTask] = useState(''); // For adding custom tasks
+    const [customTask, setCustomTask] = useState(''); 
 
     useEffect(() => {
         fetchReports();
@@ -89,7 +89,7 @@ const DailyReport = () => {
     // Handle adding custom task
     const handleAddCustomTask = () => {
         if (customTask.trim() !== '') {
-            setTasks([{...tasks,  taskName: customTask }]);
+            setTasks([{ ...tasks, taskName: customTask }]);
             setCustomTask('');
             setIsModalVisible(false);
         } else {
@@ -216,7 +216,7 @@ const DailyReport = () => {
                                     <View style={stylesforDailyReport.modalContainers}>
                                         <View style={stylesforDailyReport.picker}>
                                             <Picker
-                                                selectedValue={tasks.map(task => task.id)}  // Use task IDs for Picker value
+                                                selectedValue={tasks.map(task => task.id)}
                                                 style={stylesforDailyReport.picker}
                                                 onValueChange={(itemValue) => handleTaskSelection(itemValue)}
                                             >
@@ -225,8 +225,6 @@ const DailyReport = () => {
                                                     <Picker.Item key={task.id} label={task.taskName} value={task.id} />
                                                 ))}
                                             </Picker>
-
-
                                             <Icon
                                                 name="keyboard-arrow-down"
                                                 color="#000000"
@@ -239,18 +237,17 @@ const DailyReport = () => {
                                         <TextInput
                                             style={stylesforDailyReport.input}
                                             placeholder="Add Custom Task"
+                                            placeholderTextColor="gray"
                                             value={customTask}
                                             onChangeText={setCustomTask}
                                         />
-                                        <Button title="Add Task" onPress={handleAddCustomTask} />
-
-                                        {/* Save Button */}
-                                        <View>
+                                        <View style={stylesforDailyReport.FooterButton} >
                                             <Button
                                                 style={stylesforDailyReport.buttonContainer}
-                                                title="Save"
+                                                title="Close"
                                                 onPress={() => setIsModalVisible(false)}
                                             />
+                                            <Button title="Add Task" onPress={handleAddCustomTask} />
                                         </View>
                                     </View>
                                 </View>

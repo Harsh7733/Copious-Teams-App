@@ -996,7 +996,7 @@ export const stylesforDailyReport = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 5,
         height: 40,
         width: 200,
         marginLeft: 80,
@@ -1027,7 +1027,6 @@ export const stylesforDailyReport = StyleSheet.create({
     cardContainer: {
         marginBottom: 1,
         padding: 5,
-
     },
 
     card: {
@@ -1181,9 +1180,6 @@ export const stylesforDailyReport = StyleSheet.create({
         position: 'absolute',
         right: 10,
         top: 15,
-    },
-    button: {
-        marginHorizontal: 5,
     },
     popoverContent: {
         padding: 10,
