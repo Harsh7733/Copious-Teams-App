@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, Button, Modal, TextInput, FlatList, TouchableOpacity } from 'react-native';
-import { stylesforVersionManagement } from '../../styles/styles';
-import { createNewVersionManagementEntry } from '../services';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button, Modal, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { createNewVersionManagementEntry } from '../../Services/VersionManagementService';
 import { Picker } from '@react-native-picker/picker';
+import { getUsers } from '../../Services/UserService';  // Import getUsers from UserService
+import { stylesforVersionManagement } from '../../styles/styles';
 
 const VersionManagement = () => {
   const [entries, setEntries] = useState([]);
@@ -11,6 +12,24 @@ const VersionManagement = () => {
   const [technologyUsed, setTechnologyUsed] = useState('');
   const [currentVersion, setCurrentVersion] = useState('');
   const [latestVersion, setLatestVersion] = useState('');
+  const [users, setUsers] = useState([]); // State to store users
+
+  // Fetch users when the component mounts
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await getUsers(); // Fetch users
+        if (response.status === 200) {
+          setUsers(response.data); // Assuming response.data is an array of users
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        alert('Failed to fetch users');
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   // Handle form submission
   const handleCreateReport = async () => {
@@ -80,7 +99,7 @@ const VersionManagement = () => {
               >
                 <Picker.Item label="Select User" value="" />
                 {users.map((user) => (
-                  <Picker.Item key={user.id} label={user.userName} value={user.id} />
+                  <Picker.Item key={user.id} label={user.name} value={user.id} />
                 ))}
               </Picker>
             </View>
@@ -125,7 +144,9 @@ const VersionManagement = () => {
       <FlatList
         data={entries}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => <Text>{item.technologyUsed} - {item.currentVersion} / {item.latestVersion}</Text>}
+        renderItem={({ item }) => (
+          <Text>{item.technologyUsed} - {item.currentVersion} / {item.latestVersion}</Text>
+        )}
       />
     </View>
   );
