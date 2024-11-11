@@ -1386,4 +1386,25 @@ export const stylesforVersionManagement = StyleSheet.create({
         fontSize: 18,
         marginVertical: 0,
     },
+    card: {
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        marginBottom: 10,
+        padding: 15,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    cardTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    cardText: {
+        fontSize: 14,
+        color: '#666',
+        marginTop: 5,
+    },
 });

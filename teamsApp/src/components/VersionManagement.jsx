@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, Modal, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { createNewVersionManagementEntry } from '../../Services/VersionManagementService';
+import { View, Text, Button, Modal, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { createNewVersionManagementEntry, getAllVersionManagementEntries } from '../../Services/VersionManagementService';
 import { Picker } from '@react-native-picker/picker';
-import { getUsers } from '../../Services/UserService';  // Import getUsers from UserService
+import { getUsers } from '../../Services/UserService';  
 import { stylesforVersionManagement } from '../../styles/styles';
 
 const VersionManagement = () => {
@@ -14,7 +14,7 @@ const VersionManagement = () => {
   const [latestVersion, setLatestVersion] = useState('');
   const [users, setUsers] = useState([]); // State to store users
 
-  // Fetch users when the component mounts
+  // Fetch users and version entries when the component mounts
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -28,7 +28,21 @@ const VersionManagement = () => {
       }
     };
 
+    const fetchEntries = async () => {
+      try {
+        const response = await getAllVersionManagementEntries(); // Fetch all version management entries
+        if (response.status === 200) {
+          const sortedEntries = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort by creation date descending
+          setEntries(sortedEntries); // Assuming response.data is the array of entries
+        }
+      } catch (error) {
+        console.error('Error fetching entries:', error);
+        alert('Failed to fetch version management entries');
+      }
+    };
+
     fetchUsers();
+    fetchEntries();  // Fetch version entries when the component mounts
   }, []);
 
   // Handle form submission
@@ -49,7 +63,8 @@ const VersionManagement = () => {
     try {
       const response = await createNewVersionManagementEntry(newEntry);
       if (response.status === 201) {
-        setEntries((prevEntries) => [...prevEntries, response.data.newEntry]);
+        const newEntries = [response.data.newEntry, ...entries]; // Add the new entry to the top
+        setEntries(newEntries);
         setModalVisible(false);
         setTechnologyUsed('');
         setCurrentVersion('');
@@ -64,12 +79,14 @@ const VersionManagement = () => {
   };
 
   return (
-    <View style={{ flex: 1, padding: 20, marginTop: 50 }}>
-      <View style={{ alignItems: 'center', marginBottom: 20 }}>
+    <View style={{ flex: 1, padding: 20, marginTop: 40 }}>
+      <View style={{ alignItems: 'center', marginBottom: 10 }}>
         <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>-: Version Management :-</Text>
       </View>
 
       <Button title="Add Entry" onPress={() => setModalVisible(true)} />
+
+      {/* Modal for creating a new version management entry */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -99,7 +116,7 @@ const VersionManagement = () => {
               >
                 <Picker.Item label="Select User" value="" />
                 {users.map((user) => (
-                  <Picker.Item key={user.id} label={user.name} value={user.id} />
+                  <Picker.Item key={user.id} label={user.userName} value={user.id} />
                 ))}
               </Picker>
             </View>
@@ -141,13 +158,17 @@ const VersionManagement = () => {
         </View>
       </Modal>
 
-      <FlatList
-        data={entries}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <Text>{item.technologyUsed} - {item.currentVersion} / {item.latestVersion}</Text>
-        )}
-      />
+      {/* Display Version Management Entries as Cards */}
+      <ScrollView style={{ marginTop: 15, marginBottom: -70 }}>
+        {entries.map((entry, index) => (
+          <View key={index} style={stylesforVersionManagement.card}>
+            <Text style={stylesforVersionManagement.cardTitle}>{entry.technologyUsed}</Text>
+            <Text style={stylesforVersionManagement.cardText}>Current Version: {entry.currentVersion}</Text>
+            <Text style={stylesforVersionManagement.cardText}>Latest Version: {entry.latestVersion}</Text>
+            <Text style={stylesforVersionManagement.cardText}>Created By: {users.find(user => user.id === entry.userId)?.userName || 'Unknown'}</Text>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 };
