@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for API
-const API_URL = 'http:// 192.168.32.85:8080/dailyReports';
+const API_URL = 'http://192.168.1.7:8080/dailyReports';
 
 //Fetch all Daily Reports
 export const getAllReports = () => axios.get(API_URL);

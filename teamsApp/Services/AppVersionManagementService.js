@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http:// 192.168.32.85:8080/appVersionManagement';
+const API_URL = 'http://192.168.1.7:8080/appVersionManagement';
 
 //Create new AVM Entry
 export const createNewAppVersionManagementEntry = (avmEntry) => axios.post(API_URL, avmEntry);
