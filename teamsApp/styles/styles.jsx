@@ -1426,7 +1426,7 @@ export const stylesforUsers = StyleSheet.create({
         color: '#ffffff',
     },
     card: {
-        backgroundColor: 'teal',
+        backgroundColor: '#ffffff',
         padding: 15,
         borderRadius: 8,
         marginBottom: 10,
@@ -1440,16 +1440,24 @@ export const stylesforUsers = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
-        color: 'black',
+        color: '#316cb5',
+    },
+    pickerText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: '#000000',
     },
     picker: {
         height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
+        borderColor: 'black',
+        borderWidth: 10,
         borderRadius: 4,
         paddingHorizontal: 10,
     },
-    pickerItem: {
-        color: '#000000',
+    icon: {
+        position: 'absolute',
+        right: 10,
+        top: 15,
     },
 });

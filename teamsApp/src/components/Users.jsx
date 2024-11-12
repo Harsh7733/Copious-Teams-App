@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text,  FlatList } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { getUsers, updateUser } from '../../Services/UserService';
 import { Picker } from '@react-native-picker/picker';
 import { stylesforUsers } from '../../styles/styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -45,12 +46,19 @@ const Users = () => {
         selectedValue={item.userType}
         onValueChange={(value) => handleUpdateUserType(item.id, value)}
         style={stylesforUsers.picker}
-        itemStyle={stylesforUsers.pickerItem}
       >
         {userTypes.map(type => (
-          <Picker.Item key={type.value} label={type.label} value={type.value} />
+          <Picker.Item
+            style={stylesforUsers.pickerText}
+            key={type.value} label={type.label} value={type.value} />
         ))}
       </Picker>
+      <Icon
+        name="keyboard-arrow-down"
+        color="#000000"
+        size={25}
+        style={stylesforUsers.icon}
+      />
     </View>
   );
 
