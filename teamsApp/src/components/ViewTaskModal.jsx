@@ -1,20 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, Button, TextInput, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
-import { stylesforViewTaskModal } from '../../styles/styles';
-import axios from 'axios';
+import { Modal, View, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { stylesforViewTaskModal } from '../../styles/styles'; // Ensure this import is correct
+import { launchImageLibrary } from 'react-native-image-picker';
+import { updateTask } from '../../Services/TaskService';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users, API_URL }) => {
+const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) => {
     const [loading, setLoading] = useState(true);
     const [updatedDescription, setUpdatedDescription] = useState(task?.taskDescription || '');
-    const [mediaFiles, setMediaFiles] = useState([]); // Placeholder for media files
+    const [mediaFiles, setMediaFiles] = useState([]);
     const [isSaving, setIsSaving] = useState(false);
+    const [imagePreview, setImagePreview] = useState(null); // state for image preview
 
     useEffect(() => {
         if (isVisible) {
-            // Only show the modal when all data is available
             setLoading(!(tags.length > 0 && users.length > 0));
         }
     }, [isVisible, tags, users]);
+
+    if (!task) {
+        return (
+            <Modal animationType="slide" transparent={true} visible={isVisible} onRequestClose={onClose}>
+                <View style={stylesforViewTaskModal.modalContainer}>
+                    <View style={stylesforViewTaskModal.modalContent}>
+                        <Text>Loading task...</Text>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
 
     const getTagNamesByIds = (tagIds) => {
         if (!tagIds || tagIds.length === 0) return ['No Tags'];
@@ -28,112 +42,180 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users, API
     };
 
     const handleSelectMedia = () => {
-        // This would typically open a media picker (image/video). Here's a mock example:
-        const mockMedia = [{ uri: 'https://example.com/media-file.jpg' }]; // Placeholder for the selected file(s)
-        setMediaFiles(mockMedia);
+        launchImageLibrary(
+            {
+                mediaType: 'photo',
+                includeBase64: false,
+                quality: 1,
+            },
+            (response) => {
+                if (response.didCancel) {
+                    console.log('User cancelled image picker');
+                } else if (response.errorCode) {
+                    console.error('ImagePicker Error: ', response.errorMessage);
+                } else {
+                    if (response.assets && response.assets.length > 0 && response.assets[0].uri) {
+                        setMediaFiles([...mediaFiles, { uri: response.assets[0].uri }]);
+                    } else {
+                        console.error('Invalid media file URI', response.assets);
+                    }
+                }
+            }
+        );
     };
 
     const handleSaveTask = async () => {
-        if (isSaving) return; // Prevent multiple submissions
+        if (isSaving) return;
 
         setIsSaving(true);
 
         const updatedTask = {
             ...task,
             taskDescription: updatedDescription,
-            mediaFiles: mediaFiles, // Add media files
+            mediaFiles: mediaFiles, // This might depend on how media is sent to the backend
         };
 
         try {
-            const response = await axios.put(`${API_URL}/${task.id}`, updatedTask);
+            await updateTask(updatedTask);
             alert('Task updated successfully!');
-            onClose(); // Close the modal after saving
+            onClose();
         } catch (error) {
-            console.error('Failed to update task:', error.response ? error.response.data : error.message);
+            console.error('Failed to update task:', error.message);
             alert('Failed to update task');
         } finally {
             setIsSaving(false);
         }
     };
 
-    if (loading) {
-        return (
-            <Modal animationType="slide" transparent={true} visible={isVisible} onRequestClose={onClose}>
-                <View style={stylesforViewTaskModal.modalContainer}>
-                    <View style={stylesforViewTaskModal.modalContent}>
-                        <ActivityIndicator size="large" color="#0000ff" />
-                        <Text>Loading...</Text>
-                    </View>
-                </View>
-            </Modal>
-        );
-    }
+    const handleCompleteTask = async () => {
+        if (isSaving) return;
 
-    if (!task) return null;
+        setIsSaving(true);
+        const updatedTask = {
+            ...task,
+            status: 'Completed',
+            taskDescription: updatedDescription,
+            mediaFiles: mediaFiles,
+        };
+
+        try {
+            await updateTask(updatedTask);
+            alert('Task marked as completed!');
+            onClose();
+        } catch (error) {
+            console.error('Failed to update task:', error.message);
+            alert('Failed to mark task as completed');
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const year = date.getFullYear();
-
         return `${day}/${month}/${year}`;
+    };
+
+    const closeImagePreview = () => {
+        setImagePreview(null); // Close the image preview modal
     };
 
     return (
         <Modal animationType="slide" transparent={true} visible={isVisible} onRequestClose={onClose}>
             <View style={stylesforViewTaskModal.modalContainer}>
                 <View style={stylesforViewTaskModal.modalContent}>
-                    <Text style={stylesforViewTaskModal.header}>Section Name :</Text>
-                    <Text style={stylesforViewTaskModal.input}>{sectionName}</Text>
-
-                    <Text style={stylesforViewTaskModal.header}>Task Name :</Text>
-                    <Text style={stylesforViewTaskModal.input}>{task.taskName}</Text>
-
-                    <Text style={stylesforViewTaskModal.header}>Due Date :</Text>
-                    <Text style={stylesforViewTaskModal.input}>{formatDate(task.dueDate)}</Text>
-
-                    <Text style={stylesforViewTaskModal.header}>Assigned To:</Text>
-                    <Text style={stylesforViewTaskModal.input}>
-                        {getUserNameById(task.taskAssignedToID)}
-                    </Text>
-
-                    <Text style={stylesforViewTaskModal.header}>Status:</Text>
-                    <Text style={stylesforViewTaskModal.input}>{task.status}</Text>
-
-                    <Text style={stylesforViewTaskModal.header}>Tags:</Text>
-                    <Text style={stylesforViewTaskModal.input}>
-                        {getTagNamesByIds(task.tagIDs).join(', ')}
-                    </Text>
-
-                    <Text style={stylesforViewTaskModal.header}>Description:</Text>
-                    <TextInput
-                        style={stylesforViewTaskModal.input}
-                        value={updatedDescription}
-                        onChangeText={setUpdatedDescription}
-                        multiline
-                        numberOfLines={4}
-                    />
-
-                    <Text style={stylesforViewTaskModal.header}>Media Files:</Text>
-                    <TouchableOpacity onPress={handleSelectMedia} style={stylesforViewTaskModal.button}>
-                        <Text>Select Media Files</Text>
+                    {/* Close Icon */}
+                    <TouchableOpacity onPress={onClose} style={stylesforViewTaskModal.closeIcon}>
+                        <Ionicons name="close-circle" size={30} color="black" />
                     </TouchableOpacity>
-                    {mediaFiles.length > 0 && (
-                        <View style={stylesforViewTaskModal.mediaContainer}>
-                            {mediaFiles.map((file, index) => (
-                                <Image key={index} source={{ uri: file.uri }} style={stylesforViewTaskModal.mediaFile} />
-                            ))}
-                        </View>
-                    )}
-                    <View style={stylesforViewTaskModal.FooterButton} >
-                        <Button title="Completed" onPress={onClose} />
-                        <Button title={isSaving ? 'Saving...' : 'Save'} onPress={handleSaveTask} disabled={isSaving} />
-                        <Button title="Close" onPress={onClose} />
-                    </View>
 
+                    {/* ScrollView for content */}
+                    <ScrollView contentContainerStyle={stylesforViewTaskModal.scrollViewContent}>
+                        <Text style={stylesforViewTaskModal.header}>Section Name :</Text>
+                        <Text style={stylesforViewTaskModal.input}>{sectionName}</Text>
+
+                        <Text style={stylesforViewTaskModal.header}>Task Name :</Text>
+                        <Text style={stylesforViewTaskModal.input}>{task.taskName}</Text>
+
+                        <Text style={stylesforViewTaskModal.header}>Due Date :</Text>
+                        <Text style={stylesforViewTaskModal.input}>{formatDate(task.dueDate)}</Text>
+
+                        <Text style={stylesforViewTaskModal.header}>Assigned To:</Text>
+                        <Text style={stylesforViewTaskModal.input}>
+                            {getUserNameById(task.taskAssignedToID)}
+                        </Text>
+
+                        <Text style={stylesforViewTaskModal.header}>Status:</Text>
+                        <Text style={stylesforViewTaskModal.input}>{task.status}</Text>
+
+                        <Text style={stylesforViewTaskModal.header}>Tags:</Text>
+                        <Text style={stylesforViewTaskModal.input}>
+                            {getTagNamesByIds(task.tagIDs).join(', ')}
+                        </Text>
+
+                        <Text style={stylesforViewTaskModal.header}>Description:</Text>
+                        <TextInput
+                            style={stylesforViewTaskModal.input}
+                            value={updatedDescription}
+                            onChangeText={setUpdatedDescription}
+                            multiline
+                            numberOfLines={4}
+                        />
+
+                        <Text style={stylesforViewTaskModal.header}>Media Files:</Text>
+                        <TouchableOpacity onPress={handleSelectMedia} style={stylesforViewTaskModal.buttonMedia}>
+                            <Text style={stylesforViewTaskModal.mediaText}> + Upload Media Files</Text>
+                        </TouchableOpacity>
+                        {mediaFiles.length > 0 && (
+                            <View style={stylesforViewTaskModal.mediaContainer}>
+                                {mediaFiles.map((file, index) => (
+                                    file.uri ? (
+                                        <TouchableOpacity key={index} onPress={() => setImagePreview(file.uri)}>
+                                            <Image key={index} source={{ uri: file.uri }} style={stylesforViewTaskModal.mediaFile} />
+                                        </TouchableOpacity>
+                                    ) : (
+                                        <Text key={index}>Invalid Media</Text>
+                                    )
+                                ))}
+                            </View>
+                        )}
+                    </ScrollView>
+
+                    {/* Footer with buttons */}
+                    <View style={stylesforViewTaskModal.FooterButton}>
+                        <TouchableOpacity
+                            onPress={handleCompleteTask}
+                            style={[stylesforViewTaskModal.completeButton]}>
+                            <Text style={stylesforViewTaskModal.buttonText}>Completed</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={handleSaveTask}
+                            style={[stylesforViewTaskModal.saveButton]}
+                            disabled={isSaving}>
+                            <Text style={stylesforViewTaskModal.buttonText}>{isSaving ? 'Saving...' : 'Save'}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
+
+            {/* Image Preview Modal */}
+            {imagePreview && (
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={!!imagePreview}
+                    onRequestClose={closeImagePreview}
+                >
+                    <View style={stylesforViewTaskModal.imagePreviewModal}>
+                        <TouchableOpacity style={stylesforViewTaskModal.closeImagePreview} onPress={closeImagePreview}>
+                            <Ionicons name="close-circle" size={40} color="white" />
+                        </TouchableOpacity>
+                        <Image source={{ uri: imagePreview }} style={stylesforViewTaskModal.imagePreview} />
+                    </View>
+                </Modal>
+            )}
         </Modal>
     );
 };

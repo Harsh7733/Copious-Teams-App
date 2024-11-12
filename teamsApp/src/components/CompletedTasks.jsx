@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { getCompletedTasks, updateTask } from '../../Services/TaskService';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import {stylesforCompletedTasks} from '../../styles/styles'
+ 
 const CompletedTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Track loading state
@@ -13,7 +14,7 @@ const CompletedTasks = () => {
       try {
         const response = await getCompletedTasks();
         setTasks(response.data);
-        setIsLoading(false); // Set loading state to false after data is fetched
+        setIsLoading(false); 
       } catch (error) {
         console.error('Error fetching tasks:', error);
         setIsLoading(false);
@@ -38,7 +39,6 @@ const CompletedTasks = () => {
 
       // Check for successful update response
       if (response.status === 200) {
-        // Update the state by replacing the task with the updated task
         setTasks((prevTasks) =>
           prevTasks.map((task) =>
             task.id === taskId ? { ...task, status: 'In Progress' } : task
@@ -54,8 +54,8 @@ const CompletedTasks = () => {
 
   // Render item for each task
   const renderItem = ({ item }) => (
-    <View style={styles.taskContainer}>
-      <Text style={styles.taskText}>{item.taskName}</Text>
+    <View style={stylesforCompletedTasks.taskContainer}>
+      <Text style={stylesforCompletedTasks.taskText}>{item.taskName}</Text>
       <TouchableOpacity onPress={() => restoreTaskStatus(item.id)}>
         <Icon name="restore" size={24} color="green" />
       </TouchableOpacity>
@@ -64,15 +64,15 @@ const CompletedTasks = () => {
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>-: Loading Completed Tasks :-</Text>
+      <View style={stylesforCompletedTasks.container}>
+        <Text style={stylesforCompletedTasks.title}>-: Loading Completed Tasks :-</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>-: Completed Tasks :-</Text>
+    <View style={stylesforCompletedTasks.container}>
+      <Text style={stylesforCompletedTasks.title}>-: Completed Tasks :-</Text>
       <FlatList
         data={tasks}
         renderItem={renderItem}
@@ -81,39 +81,5 @@ const CompletedTasks = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    marginTop: 50,
-    marginBottom: -70,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
-    color: '#ffffff',
-  },
-  taskContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#fff',
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  taskText: {
-    fontSize: 16,
-    color: '#316cb5',
-    fontWeight: 'bold',
-  },
-});
 
 export default CompletedTasks;

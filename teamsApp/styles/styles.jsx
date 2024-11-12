@@ -785,8 +785,82 @@ export const stylesforViewTaskModal = StyleSheet.create({
         right: 10,
         top: 15,
     },
-    button: {
+    buttonMedia: {
         marginHorizontal: 5,
+        marginVertical: 0,
+        height: 30,
+        backgroundColor: 'teal',
+        borderRadius: 5,
+    },
+    mediaFile: {
+        backgroundColor: 'black',
+
+    },
+    mediaText: {
+        color: '#ffffff',
+        fontWeight: 'bold',
+        fontSize: 15,
+        marginVertical: 2,
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    completeButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginVertical: 5,
+        borderRadius: 5,
+        alignItems: 'center',
+        backgroundColor: '#249605',
+    },
+    saveButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginVertical: 5,
+        borderRadius: 5,
+        alignItems: 'center',
+        backgroundColor: '#0080ff',
+    },
+    closeIcon: {
+        position: 'absolute',
+        top: -10,
+        right: -2,
+        color: 'red',
+        zIndex: 10,
+    },
+    scrollViewContent: {
+        paddingBottom: 10,
+    },
+    mediaContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: 10,
+    },
+    mediaFile: {
+        width: 80,
+        height: 80,
+        margin: 5,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#ddd',
+    },
+    imagePreviewModal: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
+    closeImagePreview: {
+        position: 'absolute',
+        top: 20,
+        right: 20,
+    },
+    imagePreview: {
+        width: '90%',
+        height: '80%',
+        resizeMode: 'contain',
     },
     popoverContent: {
         padding: 10,
@@ -872,6 +946,8 @@ export const stylesforViewTaskModal = StyleSheet.create({
         backgroundColor: 'white',
         padding: 20,
         borderRadius: 10,
+        marginLeft: 30,
+        marginTop: 50,
         width: 350,
     },
     modalContainers: {
@@ -892,8 +968,18 @@ export const stylesforViewTaskModal = StyleSheet.create({
         borderRadius: 80,
         marginBottom: 5,
     },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        marginTop: 20,
+    },
+    mediaContainer: {
+        backgroundColor: 'teal',
+        padding: 10,
+        borderRadius: 80,
+        marginBottom: 5,
+    }
 });
-
 
 export const stylesforSidebar = StyleSheet.create({
     overlay: {
@@ -1284,12 +1370,7 @@ export const stylesforDailyReport = StyleSheet.create({
         marginBottom: 10,
         color: 'black',
     },
-    buttonContainer: {
-        backgroundColor: 'teal',
-        padding: 10,
-        borderRadius: 80,
-        marginBottom: 5,
-    }
+
 });
 
 export const stylesforVersionManagement = StyleSheet.create({
@@ -1453,11 +1534,45 @@ export const stylesforUsers = StyleSheet.create({
         borderWidth: 10,
         borderRadius: 4,
         paddingHorizontal: 10,
-        
+
     },
     icon: {
         position: 'absolute',
         right: 200,
         top: 58,
+    },
+});
+
+export const stylesforCompletedTasks = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        marginTop: 50,
+        marginBottom: -70,
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 20,
+        color: '#ffffff',
+    },
+    taskContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: '#fff',
+        padding: 10,
+        marginVertical: 5,
+        borderRadius: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
+    },
+    taskText: {
+        fontSize: 16,
+        color: '#316cb5',
+        fontWeight: 'bold',
     },
 });

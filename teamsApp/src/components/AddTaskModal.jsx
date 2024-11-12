@@ -137,7 +137,7 @@ const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
             setTags(prev => [...prev, savedTag]);
             setCustomTag('');
         } catch (error) {
-            Alert.alert('Error', 'Failed to save custom tag: ' + errorMessage);
+            Alert.alert('Error', 'Failed to save custom tag: ' + error.message);
         }
     };
 
@@ -148,6 +148,7 @@ const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
 
     return (
         <Modal visible={visible} animationType="slide" transparent>
+            
             <View style={stylesforAddTaskModal.overlay}>
                 <View style={stylesforAddTaskModal.modalContainer}>
                     <ScrollView contentContainerStyle={stylesforAddTaskModal.scrollContainer}>
@@ -166,7 +167,6 @@ const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
                                         value={section.id}
                                     />
                                 ))}
-
                             </Picker>
                             <Icon name="keyboard-arrow-down" color="#000000" size={25} style={stylesforAddTaskModal.icon} />
                         </View>
@@ -224,14 +224,8 @@ const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
                                                         value={tag.id}
                                                     />
                                                 ))}
-
                                             </Picker>
-                                            <Icon
-                                                name="keyboard-arrow-down"
-                                                color="#000000"
-                                                size={25}
-                                                style={stylesforAddTaskModal.icon}
-                                            />
+                                            <Icon name="keyboard-arrow-down" color="#000000" size={25} style={stylesforAddTaskModal.icon} />
                                         </View>
 
                                         <Text style={stylesforAddTaskModal.header}>Add Custom Tag:</Text>
@@ -245,7 +239,6 @@ const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
                                             />
                                             <Button title="Add Tag" onPress={handleAddCustomTag} />
                                         </View>
-
 
                                         {tags.map((tag, index) => (
                                             <View
@@ -280,8 +273,6 @@ const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
                                     </TouchableOpacity>
                                 </View>
                             ))}
-
-
                         </View>
 
                         <Text style={stylesforAddTaskModal.header}>Due Date:</Text>
@@ -292,6 +283,7 @@ const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
                             onFocus={() => setShowDatePicker(true)}
                             style={stylesforAddTaskModal.input}
                         />
+
                         {showDatePicker && (
                             <DateTimePicker
                                 value={dueDate}
@@ -300,6 +292,22 @@ const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
                                 onChange={handleDateChange}
                             />
                         )}
+
+                        <Text style={stylesforAddTaskModal.header}>Status:</Text>
+
+                        <View style={stylesforAddTaskModal.pickerContainer}>
+                            <Picker
+                                selectedValue={status}
+                                style={stylesforAddTaskModal.picker}
+                                onValueChange={(itemValue) => setStatus(itemValue)}
+                            >
+                                <Picker.Item label="Not Started" value="Not Started" />
+                                <Picker.Item label="On Hold" value="On Hold" />
+                                <Picker.Item label="In Progress" value="In Progress" />
+                                <Picker.Item label="Completed" value="Completed" />
+                            </Picker>
+                            <Icon name="keyboard-arrow-down" color="#000000" size={25} style={stylesforAddTaskModal.icon} />
+                        </View>
 
                         <View style={stylesforAddTaskModal.FooterButton} >
                             <Button title="Save Task" onPress={handleSave} />

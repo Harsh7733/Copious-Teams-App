@@ -16,8 +16,8 @@ const TaskList = () => {
   const [collapsedSections, setCollapsedSections] = useState({});
   const [tags, setTags] = useState([]);
   const [users, setUsers] = useState([]);
-  const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);  
-  const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false);  
+  const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
+  const [isAddSectionModalVisible, setIsAddSectionModalVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [selectedSectionName, setSelectedSectionName] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -38,13 +38,16 @@ const TaskList = () => {
         for (const section of sectionData) {
           try {
             const taskResponse = await getTasksBySection(section.id);
-            tasksData[section.id] = taskResponse.data;
+            // Filter out tasks that are completed or deleted
+            const filteredTasks = taskResponse.data.filter(task => task.status !== 'Completed' && task.isDelete === false);
+            tasksData[section.id] = filteredTasks;
           } catch (error) {
             console.error('Fetch Tasks Error:', error);
           }
         }
         setTasks(tasksData);
       };
+
 
       await fetchTasks();
 
@@ -118,15 +121,15 @@ const TaskList = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const day = date.getDate().toString().padStart(2, '0'); 
+    const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
-  
-    return `${day}/${month}/${year}`; 
-  };  
+
+    return `${day}/${month}/${year}`;
+  };
 
   return (
-    <ScrollView 
+    <ScrollView
       refreshControl={
         <RefreshControl
           refreshing={isRefreshing}
@@ -164,7 +167,7 @@ const TaskList = () => {
                     </TouchableOpacity>
                   ))
                 ) : (
-                  <Text style={stylesforTaskList.noTasks}>No tasks available.</Text>
+                  <Text style={stylesforTaskList.noTasks}>No active tasks available.</Text>
                 )}
               </View>
             </Collapsible>
@@ -181,10 +184,10 @@ const TaskList = () => {
         users={users}
       />
 
-      <AddSectionModal 
-        visible={isAddSectionModalVisible} 
-        onClose={() => setIsAddSectionModalVisible(false)} 
-        onSave={addNewSection} 
+      <AddSectionModal
+        visible={isAddSectionModalVisible}
+        onClose={() => setIsAddSectionModalVisible(false)}
+        onSave={addNewSection}
       />
     </ScrollView>
   );
