@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for API endpoints
-const API_URL = 'http://192.168.1.7:8080/tasks';
+const API_URL = 'http:// 192.168.32.85:8080/tasks';
 
 // Fetch all tasks
 export const getTasks = () => axios.get(API_URL);

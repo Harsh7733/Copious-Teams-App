@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://192.168.1.7:8080/media';
+const API_URL = 'http:// 192.168.32.85:8080/media';
 
 // Fetch all Media
 export const getAllMedia = () => axios.get(API_URL);

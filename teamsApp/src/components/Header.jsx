@@ -7,6 +7,7 @@ import Section from '../components/Sections';
 import AppVersionManagement from './AppVersionManagement';
 import Users from './Users';
 import { stylesforHeader } from '../../styles/styles';
+import CompletedTasks from './CompletedTasks';
 
 const Header = () => {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -38,6 +39,7 @@ const Header = () => {
       {selectedScreen === 'Section' && <Section />}
       {selectedScreen === 'App Version Management' && <AppVersionManagement />}
       {selectedScreen === 'Users' && <Users />}
+      {selectedScreen === 'Completed Tasks' && <CompletedTasks />}
 
     </View>
   );

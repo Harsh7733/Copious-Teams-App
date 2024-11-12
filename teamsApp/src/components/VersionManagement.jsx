@@ -84,7 +84,7 @@ const VersionManagement = () => {
         <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>-: Version Management :-</Text>
       </View>
 
-      <Button title="Add Entry" onPress={() => setModalVisible(true)} />
+      <Button title="+ Add Entry" onPress={() => setModalVisible(true)} />
 
       {/* Modal for creating a new version management entry */}
       <Modal

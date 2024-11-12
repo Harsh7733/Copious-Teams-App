@@ -1044,7 +1044,7 @@ export const stylesforDailyReport = StyleSheet.create({
     cardTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#333',
+        color: '#316cb5',
     },
 
     cardText: {
@@ -1403,7 +1403,7 @@ export const stylesforVersionManagement = StyleSheet.create({
     cardTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#333',
+        color: '#316cb5',
     },
     cardText: {
         fontSize: 14,
@@ -1430,7 +1430,7 @@ export const stylesforUsers = StyleSheet.create({
         padding: 15,
         borderRadius: 8,
         marginBottom: 10,
-        shadowColor: '#000',
+        shadowColor: '#000000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 3,
@@ -1439,13 +1439,12 @@ export const stylesforUsers = StyleSheet.create({
     userName: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 10,
         color: '#316cb5',
     },
     pickerText: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 10,
+        marginBottom: 5,
         color: '#000000',
     },
     picker: {
@@ -1454,10 +1453,11 @@ export const stylesforUsers = StyleSheet.create({
         borderWidth: 10,
         borderRadius: 4,
         paddingHorizontal: 10,
+        
     },
     icon: {
         position: 'absolute',
-        right: 10,
-        top: 15,
+        right: 200,
+        top: 58,
     },
 });

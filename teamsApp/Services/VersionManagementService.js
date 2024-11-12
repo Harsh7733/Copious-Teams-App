@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://192.168.1.7:8080/versionManagement';
+const API_URL = 'http:// 192.168.32.85:8080/versionManagement';
 
 //Fetch all Version Management Entries
 export const getAllVersionManagementEntries = () => axios.get(API_URL);

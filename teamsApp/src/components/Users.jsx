@@ -10,7 +10,7 @@ const Users = () => {
   const [userTypes] = useState([
     { label: 'Admin', value: 'Admin' },
     { label: 'Developer', value: 'Developer' },
-    { label: 'Field Worker', value: 'Field Worker' },
+    { label: 'Field Worker', value: 'FieldWorker' },
     { label: 'Doctor', value: 'Doctor' },
   ]);
 

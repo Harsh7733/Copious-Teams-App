@@ -73,12 +73,12 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users, API
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        const day = date.getDate().toString().padStart(2, '0'); 
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const year = date.getFullYear();
-      
+
         return `${day}/${month}/${year}`;
-      }; 
+    };
 
     return (
         <Modal animationType="slide" transparent={true} visible={isVisible} onRequestClose={onClose}>
@@ -127,6 +127,7 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users, API
                         </View>
                     )}
                     <View style={stylesforViewTaskModal.FooterButton} >
+                        <Button title="Completed" onPress={onClose} />
                         <Button title={isSaving ? 'Saving...' : 'Save'} onPress={handleSaveTask} disabled={isSaving} />
                         <Button title="Close" onPress={onClose} />
                     </View>
