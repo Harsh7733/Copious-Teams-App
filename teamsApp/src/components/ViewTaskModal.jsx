@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { stylesforViewTaskModal } from '../../styles/styles'; // Ensure this import is correct
+import { Modal, View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { stylesforViewTaskModal } from '../../styles/styles';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { updateTask } from '../../Services/TaskService';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -46,7 +46,7 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
             {
                 mediaType: 'photo',
                 includeBase64: false,
-                quality: 1,
+                quality: 1, 
             },
             (response) => {
                 if (response.didCancel) {
@@ -127,7 +127,7 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
             <View style={stylesforViewTaskModal.modalContainer}>
                 <View style={stylesforViewTaskModal.modalContent}>
                     {/* Close Icon */}
-                    <TouchableOpacity onPress={onClose} style={stylesforViewTaskModal.closeIcon}>
+                    <TouchableOpacity onPress={onClose} style={styles.closeIcon}>
                         <Ionicons name="close-circle" size={30} color="black" />
                     </TouchableOpacity>
 
@@ -181,20 +181,21 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
                                 ))}
                             </View>
                         )}
+
                     </ScrollView>
 
                     {/* Footer with buttons */}
                     <View style={stylesforViewTaskModal.FooterButton}>
                         <TouchableOpacity
                             onPress={handleCompleteTask}
-                            style={[stylesforViewTaskModal.completeButton]}>
-                            <Text style={stylesforViewTaskModal.buttonText}>Completed</Text>
+                            style={[styles.button, styles.completeButton]}>
+                            <Text style={styles.buttonText}>Completed</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={handleSaveTask}
-                            style={[stylesforViewTaskModal.saveButton]}
+                            style={[styles.saveButton]}
                             disabled={isSaving}>
-                            <Text style={stylesforViewTaskModal.buttonText}>{isSaving ? 'Saving...' : 'Save'}</Text>
+                            <Text style={styles.buttonText}>{isSaving ? 'Saving...' : 'Save'}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -208,16 +209,82 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
                     visible={!!imagePreview}
                     onRequestClose={closeImagePreview}
                 >
-                    <View style={stylesforViewTaskModal.imagePreviewModal}>
-                        <TouchableOpacity style={stylesforViewTaskModal.closeImagePreview} onPress={closeImagePreview}>
+                    <View style={styles.imagePreviewModal}>
+                        <TouchableOpacity style={styles.closeImagePreview} onPress={closeImagePreview}>
                             <Ionicons name="close-circle" size={40} color="white" />
                         </TouchableOpacity>
-                        <Image source={{ uri: imagePreview }} style={stylesforViewTaskModal.imagePreview} />
+                        <Image source={{ uri: imagePreview }} style={styles.imagePreview} />
                     </View>
                 </Modal>
             )}
         </Modal>
     );
 };
+
+const styles = StyleSheet.create({
+    button: {
+      
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    completeButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginVertical: 5,
+        borderRadius: 5,
+        alignItems: 'center',
+        backgroundColor: '#249605',
+    },
+    saveButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginVertical: 5,
+        borderRadius: 5,
+        alignItems: 'center',
+        backgroundColor: '#0080ff',
+    },
+    closeIcon: {
+        position: 'absolute',
+        top: -10,
+        right: -2,
+        color: 'red',
+        zIndex: 10,
+    },
+    scrollViewContent: {
+        paddingBottom: 10,
+    },
+    mediaContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: 10,
+    },
+    mediaFile: {
+        width: 80,
+        height: 80,
+        margin: 5,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#ddd',
+    },
+    imagePreviewModal: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
+    closeImagePreview: {
+        position: 'absolute',
+        top: 20,
+        right: 20,
+    },
+    imagePreview: {
+        width: '90%',
+        height: '80%',
+        resizeMode: 'contain',
+    },
+});
 
 export default ViewTaskModal;
