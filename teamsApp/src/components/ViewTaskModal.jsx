@@ -12,7 +12,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { sendToQA } from '../../Services/TaskService';
 import { getSections } from '../../Services/SectionService';
 
-const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) => {
+const ViewTaskModal = ({ isVisible, task, sectionName,section, onClose, tags, users }) => {
     const [loading, setLoading] = useState(true);
     const [updatedSectionName, setUpdatedSectionName] = useState(sectionName);
     const [updatedTaskName, setUpdatedTaskName] = useState(task?.taskName || '');
@@ -122,7 +122,8 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
         const updatedTask = {
             ...task,
             taskName: updatedTaskName,
-            sectionName: updatedSectionName,
+            sectionName,
+            // sectionName: updatedSectionName,
             dueDate: updatedDueDate.toISOString(),
             taskAssignedToID: updatedAssignedTo,
             status: updatedStatus,
@@ -151,7 +152,8 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
             ...task,
             status: 'Completed',
             taskName: updatedTaskName,
-            sectionName: updatedSectionName,
+            sectionName,
+            // sectionName: updatedSectionName,
             dueDate: updatedDueDate.toISOString(),
             taskAssignedToID: updatedAssignedTo,
             tagIDs: updatedTags,
@@ -251,7 +253,8 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
 
                     <ScrollView contentContainerStyle={stylesforViewTaskModal.scrollViewContent}>
                         <Text style={stylesforViewTaskModal.header}>Section Name :</Text>
-                        <View style={stylesforViewTaskModal.pickerContainer}>
+                        <Text style={stylesforViewTaskModal.input}>{sectionName}</Text>
+                        {/* <View style={stylesforViewTaskModal.pickerContainer}>
                             <Picker
                                 selectedValue={updatedSectionName}
                                 style={stylesforViewTaskModal.picker}
@@ -269,7 +272,7 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
                                 )}
                             </Picker>
                             <MaterialIconsIcon name="keyboard-arrow-down" color="#000000" size={25} style={stylesforViewTaskModal.icon} />
-                        </View>
+                        </View> */}
 
                         <Text style={stylesforViewTaskModal.header}>Task Name :</Text>
                         <TextInput
