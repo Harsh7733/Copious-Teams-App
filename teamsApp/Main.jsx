@@ -23,20 +23,30 @@ const Main = () => {
   const [activeScreen, setActiveScreen] = useState('home');
   const [modalType, setModalType] = useState('');
 
+  // Function to handle login action
   const handleLogin = () => {
     setIsLoggedIn(true); 
   };
 
+  // Function to handle sign-up action
   const handleSignUp = () => {
-    setIsLoggedIn(true); 
+    // After sign-up, directly go to login page for verification
+    setCurrentPage('login');
+  };
+
+  // Function to simulate login after sign-up verification
+  const handleVerification = () => {
+    // Simulate login process (e.g., validate credentials)
+    setIsLoggedIn(true);
+    setCurrentPage('home');  // After login, navigate to the home page
   };
 
   const navigateToSignUp = () => {
-    setCurrentPage('signup');
+    setCurrentPage('signup'); // Navigate to SignUp page
   };
 
   const navigateToLogin = () => {
-    setCurrentPage('login');
+    setCurrentPage('login'); // Navigate to Login page
   };
 
   const addTask = (task) => {
@@ -96,6 +106,12 @@ const Main = () => {
           <Login onLogin={handleLogin} onNavigateToSignUp={navigateToSignUp} />
         ) : (
           <SignUp onSignUp={handleSignUp} onNavigateToLogin={navigateToLogin} />
+        )}
+        {/* Add a verify button after sign-up */}
+        {currentPage === 'signup' && (
+          <TouchableOpacity onPress={handleVerification}>
+            <Text>Verify Sign Up and Login</Text>
+          </TouchableOpacity>
         )}
       </View>
     );
