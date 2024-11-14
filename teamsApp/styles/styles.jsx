@@ -711,40 +711,13 @@ export const stylesforBuildList = StyleSheet.create({
 
 export const stylesforViewTaskModal = StyleSheet.create({
     overlay: {
+        flex:1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
-    modalContainer: {
-        width: '70%',
-        borderRadius: 20,
-        backgroundColor: 'white',
-        padding: 30,
-        shadowOpacity: 0.2,
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowRadius: 20,
-        marginLeft: 20,
-        alignContent: 'center',
-        height:50,
-    },
-    modalMain: {
-        width: '70%',
-        borderRadius: 20,
-        backgroundColor: 'white',
-        padding: 30,
-        shadowOpacity: 0.2,
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowRadius: 20,
-        marginLeft: 20,
-        alignContent: 'center',
-        height:50,
-    },
+   
+   
     scrollContainer: {
         paddingBottom: 200,
     },
@@ -780,6 +753,7 @@ export const stylesforViewTaskModal = StyleSheet.create({
         borderRadius: 5,
         marginVertical: 5,
         overflow: 'hidden',
+        
     },
     picker: {
         height: 50,
@@ -929,8 +903,8 @@ export const stylesforViewTaskModal = StyleSheet.create({
         marginBottom: 5,
         width: '40%',
     },
-    addButtonText: {
-        color: '#fff',
+    addTagButton: {
+        color: '#ffffff',
         fontSize: 16,
         fontWeight: 'bold',
 
@@ -939,6 +913,23 @@ export const stylesforViewTaskModal = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+    },
+    selectedTagContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 5,
+    },
+    selectedTag: {
+        backgroundColor: 'teal',
+        color: 'white',
+        padding: 5,
+        borderRadius: 5,
+        margin: 2,
+    },
+    removeTag: {
+        color: 'red',
+        fontWeight: 'bold',
     },
     tagsContainer: {
         marginTop: 20,
@@ -963,8 +954,25 @@ export const stylesforViewTaskModal = StyleSheet.create({
         borderRadius: 10,
         marginLeft: 30,
         marginTop: 50,
-        width: 350,
+        marginBottom: 150,
+        width: '85%', 
+        position:'',       
     },
+     // modalContainer: {
+    //     width: '70%',
+    //     borderRadius: 20,
+    //     backgroundColor: 'white',
+    //     padding: 30,
+    //     shadowOpacity: 0.2,
+    //     shadowOffset: {
+    //         width: 0,
+    //         height: 1,
+    //     },
+    //     shadowRadius: 20,
+    //     marginLeft: 20,
+    //     alignContent: 'center',
+    //     height:50,
+    // },
     modalContainers: {
         backgroundColor: 'white',
         padding: 20,

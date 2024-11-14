@@ -164,10 +164,10 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users, sec
 
     const onDateChange = (event, selectedDate) => {
         if (event.type === 'set' && selectedDate) {
-            setUpdatedDueDate(selectedDate); 
-            setShowDatePicker(false); 
+            setUpdatedDueDate(selectedDate);
+            setShowDatePicker(false);
         } else {
-            setShowDatePicker(false); 
+            setShowDatePicker(false);
         }
     };
 
@@ -434,9 +434,7 @@ const styles = StyleSheet.create({
         color: 'red',
         zIndex: 10,
     },
-    scrollViewContent: {
-        paddingBottom: 100,
-    },
+
     mediaContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
