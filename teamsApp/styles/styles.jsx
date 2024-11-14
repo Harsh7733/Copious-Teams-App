@@ -816,7 +816,12 @@ export const stylesforViewTaskModal = StyleSheet.create({
         position: 'absolute',
         top: -10,
         right: -2,
-        color: 'red',
+        zIndex: 10,
+    },
+    closeIcon1: {
+        position: 'absolute',
+        top: -6,
+        right: 35,
         zIndex: 10,
     },
     scrollViewContent: {
@@ -895,6 +900,9 @@ export const stylesforViewTaskModal = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         borderRadius: 10,
+    },
+    HeaderButton: {
+        flexDirection: 'row',
     },
     addButton: {
         backgroundColor: 'teal',
@@ -1001,7 +1009,22 @@ export const stylesforViewTaskModal = StyleSheet.create({
         padding: 10,
         borderRadius: 80,
         marginBottom: 5,
-    }
+    },imagePreviewModal: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
+    closeImagePreview: {
+        position: 'absolute',
+        top: 20,
+        right: 20,
+    },
+    imagePreview: {
+        width: '90%',
+        height: '80%',
+        resizeMode: 'contain',
+    },
 });
 
 export const stylesforSidebar = StyleSheet.create({
@@ -1597,5 +1620,338 @@ export const stylesforCompletedTasks = StyleSheet.create({
         fontSize: 16,
         color: '#316cb5',
         fontWeight: 'bold',
+    },
+});
+
+export const stylesforQATester = StyleSheet.create({
+    overlay: {
+        flex:1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+   
+   
+    scrollContainer: {
+        paddingBottom: 200,
+    },
+    input: {
+        borderWidth: 1,
+        color: 'black',
+        padding: 10,
+        marginVertical: 5,
+        marginBottom: 5,
+        borderColor: 'gray',
+        borderRadius: 5,
+    },
+    rowinput: {
+        borderWidth: 1,
+        color: 'black',
+        padding: 10,
+        marginVertical: 5,
+        marginBottom: 5,
+        borderColor: 'gray',
+        borderRadius: 5,
+        width: '72%',
+        height: 38,
+    },
+    header: {
+        color: '#316cb5',
+        fontWeight: 'bold',
+        fontSize: 18,
+        marginVertical: 0,
+    },
+    pickerContainer: {
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 5,
+        marginVertical: 5,
+        overflow: 'hidden',
+        
+    },
+    picker: {
+        height: 50,
+        width: '100%',
+        marginVertical: 1,
+        color: 'black',
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: 'black',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        marginTop: 20,
+    },
+    icon: {
+        position: 'absolute',
+        right: 10,
+        top: 15,
+    },
+    buttonMedia: {
+        marginHorizontal: 5,
+        marginVertical: 0,
+        height: 30,
+        backgroundColor: 'teal',
+        borderRadius: 5,
+    },
+    mediaFile: {
+        backgroundColor: 'black',
+
+    },
+    mediaText: {
+        color: '#ffffff',
+        fontWeight: 'bold',
+        fontSize: 15,
+        marginVertical: 2,
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    completeButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginVertical: 5,
+        borderRadius: 5,
+        alignItems: 'center',
+        backgroundColor: '#249605',
+    },
+    saveButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        marginVertical: 5,
+        borderRadius: 5,
+        alignItems: 'center',
+        backgroundColor: '#0080ff',
+    },
+    closeIcon: {
+        position: 'absolute',
+        top: -10,
+        right: -2,
+        color: 'red',
+        zIndex: 10,
+    },
+    scrollViewContent: {
+        paddingBottom: 10,
+    },
+    mediaContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: 10,
+    },
+    mediaFile: {
+        width: 80,
+        height: 80,
+        margin: 5,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#ddd',
+    },
+    imagePreviewModal: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
+    closeImagePreview: {
+        position: 'absolute',
+        top: 20,
+        right: 20,
+    },
+    imagePreview: {
+        width: '90%',
+        height: '80%',
+        resizeMode: 'contain',
+    },
+    popoverContent: {
+        padding: 10,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        width: '300%',
+        height: '50%',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+    },
+    popoverTag: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#eee',
+    },
+    selectedTagContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 5,
+    },
+    selectedTag: {
+        backgroundColor: 'teal',
+        color: 'white',
+        padding: 5,
+        borderRadius: 5,
+        margin: 2,
+    },
+    removeTag: {
+        color: 'red',
+        fontWeight: 'bold',
+    },
+    popoverTrigger: {
+        color: 'blue',
+        textDecorationLine: 'underline',
+        padding: 10,
+    },
+    FooterButton: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        borderRadius: 10,
+    },
+    addButton: {
+        backgroundColor: 'teal',
+        padding: 10,
+        borderRadius: 8,
+        marginBottom: 5,
+        width: '40%',
+    },
+    addTagButton: {
+        color: '#ffffff',
+        fontSize: 16,
+        fontWeight: 'bold',
+
+    },
+    rowContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    selectedTagContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 5,
+    },
+    selectedTag: {
+        backgroundColor: 'teal',
+        color: 'white',
+        padding: 5,
+        borderRadius: 5,
+        margin: 2,
+    },
+    removeTag: {
+        color: 'red',
+        fontWeight: 'bold',
+    },
+    tagsContainer: {
+        marginTop: 20,
+        alignItems: 'center',
+    },
+    tag: {
+        fontSize: 16,
+        marginVertical: 5,
+        backgroundColor: '#f1f1f1',
+        padding: 5,
+        borderRadius: 5,
+    },
+    modalBackground: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContainer: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        marginLeft: 30,
+        marginTop: 50,
+        marginBottom: 150,
+        width: '85%', 
+        position:'',       
+    },
+     // modalContainer: {
+    //     width: '70%',
+    //     borderRadius: 20,
+    //     backgroundColor: 'white',
+    //     padding: 30,
+    //     shadowOpacity: 0.2,
+    //     shadowOffset: {
+    //         width: 0,
+    //         height: 1,
+    //     },
+    //     shadowRadius: 20,
+    //     marginLeft: 20,
+    //     alignContent: 'center',
+    //     height:50,
+    // },
+    modalContainers: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        width: 350,
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: 'black',
+    },
+    buttonContainer: {
+        backgroundColor: 'teal',
+        padding: 10,
+        borderRadius: 80,
+        marginBottom: 5,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        marginTop: 20,
+    },
+    mediaContainer: {
+        backgroundColor: 'teal',
+        padding: 10,
+        borderRadius: 80,
+        marginBottom: 5,
+    },imagePreviewModal: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
+    closeImagePreview: {
+        position: 'absolute',
+        top: 20,
+        right: 20,
+    },
+    imagePreview: {
+        width: '90%',
+        height: '80%',
+        resizeMode: 'contain',
+    },
+});
+
+export const stylesforQAList = StyleSheet.create({
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+    },
+    headerText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    taskContainer: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+    },
+    task: {
+        fontSize: 16,
     },
 });

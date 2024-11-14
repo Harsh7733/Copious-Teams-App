@@ -4,15 +4,12 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { updateTask } from '../../Services/TaskService';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
-import { stylesforViewTaskModal } from '../../styles/styles';
+import { stylesforQATester } from '../../styles/styles';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import MaterialIconsIcon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { saveTag } from '../../Services/TagService';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { sendToQA } from '../../Services/TaskService';
-import { getSections } from '../../Services/SectionService';
 
-const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) => {
+const QATester = ({ isVisible, task, sectionName, onClose, tags, users, sections }) => {
     const [loading, setLoading] = useState(true);
     const [updatedSectionName, setUpdatedSectionName] = useState(sectionName);
     const [updatedTaskName, setUpdatedTaskName] = useState(task?.taskName || '');
@@ -30,11 +27,8 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
     const [customTag, setCustomTag] = useState('');
     const [, setTags] = useState([]);
     const [availableTags, setAvailableTags] = useState([]);
-    const [sections, setSections] = useState([]);  // Default to an empty array
-
 
     useEffect(() => {
-        fetchSections();
         if (isVisible && task) {
             setUpdatedSectionName(task.sectionName);
             setUpdatedTaskName(task.taskName);
@@ -62,20 +56,6 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
             });
         }
     }, [isVisible, task]);
-
-    const fetchSections = async () => {
-        setLoading(true);
-        try {
-            const response = await getSections();
-            setSections(response.data); // Assuming response.data contains the sections
-        } catch (error) {
-            console.error('Failed to load sections:', error);
-            Alert.alert('Error', 'Failed to load sections');
-        } finally {
-            setLoading(false);
-        }
-    };
-
 
     const fetchTaskData = async (taskId) => {
         const fetchedData = await someFetchService(taskId);
@@ -221,70 +201,45 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
         setTags(updatedTags);
     };
 
-    const handleSendToQA = async () => {
-        if (isSaving) return;
-        setIsSaving(true);
-        try {
-            await sendToQA(task.id); // Send task to QA
-            alert('Task successfully sent to QA!');
-            onClose(); // Optionally close the modal after sending to QA
-        } catch (error) {
-            console.error('Failed to send task to QA:', error.message);
-            alert('Failed to send task to QA');
-        } finally {
-            setIsSaving(false);
-        }
-    };
-
     return (
-        <Modal style={stylesforViewTaskModal.modalMain} animationType="slide" transparent={true} visible={isVisible} onRequestClose={onClose}>
-            <View style={stylesforViewTaskModal.modalContainer}>
-                <View style={stylesforViewTaskModal.modalContent}>
-                    <View style={stylesforViewTaskModal.HeaderButton}>
-                        <TouchableOpacity onPress={onClose} style={stylesforViewTaskModal.closeIcon}>
-                            <Ionicons name="close-circle" size={30} color="black" />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={handleSendToQA} style={stylesforViewTaskModal.closeIcon1}>
-                            <FontAwesomeIcon name="send" label="Sent to QA" size={24} color="green" />
-                        </TouchableOpacity>
-                    </View>
+        <Modal style={stylesforQATester.modalMain} animationType="slide" transparent={true} visible={isVisible} onRequestClose={onClose}>
+            <View style={stylesforQATester.modalContainer}>
+                <View style={stylesforQATester.modalContent}>
+                    <TouchableOpacity onPress={onClose} style={stylesforQATester.closeIcon}>
+                        <Ionicons name="close-circle" size={30} color="black" />
+                    </TouchableOpacity>
 
-                    <ScrollView contentContainerStyle={stylesforViewTaskModal.scrollViewContent}>
-                        <Text style={stylesforViewTaskModal.header}>Section Name :</Text>
-                        <View style={stylesforViewTaskModal.pickerContainer}>
-                            <Picker
-                                selectedValue={updatedSectionName}
-                                style={stylesforViewTaskModal.picker}
-                                onValueChange={(itemValue) => setUpdatedSectionName(itemValue)}
-                            >
-                                {Array.isArray(sections) && sections.length > 0 ? (
-                                    sections.map((section) => (
-                                        <Picker.Item
-                                            key={section.id || `section-${section.sectionName}`} label={section.sectionName}
-                                            value={section.id}
-                                        />
-                                    ))
-                                ) : (
-                                    <Picker.Item label="No sections available" value="" />
-                                )}
-                            </Picker>
-                            <MaterialIconsIcon name="keyboard-arrow-down" color="#000000" size={25} style={stylesforViewTaskModal.icon} />
-                        </View>
+                    <ScrollView contentContainerStyle={stylesforQATester.scrollViewContent}>
+                        <Text style={stylesforQATester.header}>Section Name :</Text>
+                        <Picker
+                            selectedValue={updatedSectionName}
+                            style={stylesforQATester.picker}
+                            onValueChange={(itemValue) => setUpdatedSectionName(itemValue)}
+                        >
+                            <Picker.Item label="Select a section" value="" />
+                            {sections && sections.map((section) => (
+                                <Picker.Item
+                                    key={section.id || `section-${section.sectionName}`}
+                                    label={sectionName}
+                                    value={section.sectionName}
+                                />
+                            ))}
+                        </Picker>
 
-                        <Text style={stylesforViewTaskModal.header}>Task Name :</Text>
+                        <Text style={stylesforQATester.header}>Task Name :</Text>
                         <TextInput
-                            style={stylesforViewTaskModal.input}
+                            style={stylesforQATester.input}
                             value={updatedTaskName}
                             onChangeText={setUpdatedTaskName}
                         />
 
-                        <Text style={stylesforViewTaskModal.header}>Due Date :</Text>
+                        <Text style={stylesforQATester.header}>Due Date :</Text>
                         <TextInput
                             placeholder="Due Date (DD/MM/YYYY)"
                             placeholderTextColor="gray"
                             value={formatDate(updatedDueDate)}
                             onFocus={() => setShowDatePicker(true)}
-                            style={stylesforViewTaskModal.input}
+                            style={stylesforQATester.input}
                         />
 
                         {showDatePicker && (
@@ -296,53 +251,53 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
                             />
                         )}
 
-                        <Text style={stylesforViewTaskModal.header}>Assigned To:</Text>
-                        <View style={stylesforViewTaskModal.pickerContainer}>
+                        <Text style={stylesforQATester.header}>Assigned To:</Text>
+                        <View style={stylesforQATester.pickerContainer}>
                             <Picker
                                 selectedValue={updatedAssignedTo}
-                                style={stylesforViewTaskModal.picker}
+                                style={stylesforQATester.picker}
                                 onValueChange={setUpdatedAssignedTo}
                             >
                                 {users.map(user => (
                                     <Picker.Item key={user.id} label={user.userName} value={user.id} />
                                 ))}
                             </Picker>
-                            <MaterialIconsIcon name="keyboard-arrow-down" color="#000000" size={25} style={stylesforViewTaskModal.icon} />
+                            <Icon name="keyboard-arrow-down" color="#000000" size={25} style={stylesforQATester.icon} />
                         </View>
 
-                        <Text style={stylesforViewTaskModal.header}>Status:</Text>
-                        <View style={stylesforViewTaskModal.pickerContainer}>
+                        <Text style={stylesforQATester.header}>Status:</Text>
+                        <View style={stylesforQATester.pickerContainer}>
                             <Picker
                                 selectedValue={updatedStatus}
                                 onValueChange={setUpdatedStatus}
-                                style={stylesforViewTaskModal.input}
+                                style={stylesforQATester.input}
                             >
                                 <Picker.Item label="Not Started" value="Not Started" />
                                 <Picker.Item label="On Hold" value="On Hold" />
                                 <Picker.Item label="In Progress" value="In Progress" />
                                 <Picker.Item label="Completed" value="Completed" />
                             </Picker>
-                            <MaterialIconsIcon name="keyboard-arrow-down" color="#000000" size={25} style={stylesforViewTaskModal.icon} />
+                            <Icon name="keyboard-arrow-down" color="#000000" size={25} style={stylesforQATester.icon} />
                         </View>
 
-                        <Text style={stylesforViewTaskModal.header}>Tags:</Text>
+                        <Text style={stylesforQATester.header}>Tags:</Text>
                         <TextInput
-                            style={stylesforViewTaskModal.input}
+                            style={stylesforQATester.input}
                             value={getTagNamesByIds(updatedTags).join(', ')}
                             onChangeText={(text) => setUpdatedTags(text.split(',').map(tag => tag.trim()))}
                             placeholder="Add tags (comma separated)"
                         />
                         <TouchableOpacity onPress={() => setIsModalVisible(true)}>
-                            <Text style={stylesforViewTaskModal.addButton}>+ Add Tag</Text>
+                            <Text style={stylesforQATester.addButton}>+ Add Tag</Text>
                         </TouchableOpacity>
 
                         {updatedTags.length > 0 && (
-                            <View style={stylesforViewTaskModal.selectedTagsContainer}>
+                            <View style={stylesforQATester.selectedTagsContainer}>
                                 {getTagNamesByIds(updatedTags).map((tag, index) => (
-                                    <View key={index} style={stylesforViewTaskModal.selectedTagContainer}>
-                                        <Text style={stylesforViewTaskModal.selectedTag}>{tag}</Text>
+                                    <View key={index} style={stylesforQATester.selectedTagContainer}>
+                                        <Text style={stylesforQATester.selectedTag}>{tag}</Text>
                                         <TouchableOpacity onPress={() => handleTagRemove(tag)}>
-                                            <Text style={stylesforViewTaskModal.removeTag}>✖</Text>
+                                            <Text style={stylesforQATester.removeTag}>✖</Text>
                                         </TouchableOpacity>
                                     </View>
                                 ))}
@@ -351,13 +306,13 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
 
                         {/* Add Tag Modal */}
                         <Modal transparent={true} visible={isModalVisible} animationType="slide" onRequestClose={() => setIsModalVisible(false)}>
-                            <View style={stylesforViewTaskModal.modalBackground}>
-                                <View style={stylesforViewTaskModal.modalContainers}>
-                                    <Text style={stylesforViewTaskModal.header}>Select a tag:</Text>
+                            <View style={stylesforQATester.modalBackground}>
+                                <View style={stylesforQATester.modalContainers}>
+                                    <Text style={stylesforQATester.header}>Select a tag:</Text>
                                     <Picker
                                         selectedValue={selectedTag}
                                         onValueChange={handleTagSelect}
-                                        style={stylesforViewTaskModal.picker}
+                                        style={stylesforQATester.picker}
                                     >
                                         <Picker.Item label="Select a tag" value="" />
                                         {tags.map((tag) => (
@@ -365,25 +320,25 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
                                         ))}
                                     </Picker>
 
-                                    <Text style={stylesforViewTaskModal.header}>Add Custom Tag:</Text>
+                                    <Text style={stylesforQATester.header}>Add Custom Tag:</Text>
                                     <TextInput
-                                        style={stylesforViewTaskModal.rowinput}
+                                        style={stylesforQATester.rowinput}
                                         value={customTag}
                                         onChangeText={setCustomTag}
                                         placeholder="Add custom tag"
                                         placeholderTextColor="gray"
                                     />
                                     <TouchableOpacity onPress={handleAddCustomTag}>
-                                        <Text style={stylesforViewTaskModal.addTagButton}>Add Tag</Text>
+                                        <Text style={stylesforQATester.addTagButton}>Add Tag</Text>
                                     </TouchableOpacity>
 
                                     {updatedTags.length > 0 && (
-                                        <View style={stylesforViewTaskModal.selectedTagsContainer}>
+                                        <View style={stylesforQATester.selectedTagsContainer}>
                                             {getTagNamesByIds(updatedTags).map((tag, index) => (
-                                                <View key={index} style={stylesforViewTaskModal.selectedTagContainer}>
-                                                    <Text style={stylesforViewTaskModal.selectedTag}>{tag}</Text>
+                                                <View key={index} style={stylesforQATester.selectedTagContainer}>
+                                                    <Text style={stylesforQATester.selectedTag}>{tag}</Text>
                                                     <TouchableOpacity onPress={() => handleTagRemove(tag)}>
-                                                        <Text style={stylesforViewTaskModal.removeTag}>✖</Text>
+                                                        <Text style={stylesforQATester.removeTag}>✖</Text>
                                                     </TouchableOpacity>
                                                 </View>
                                             ))}
@@ -396,25 +351,25 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
                         </Modal>
 
 
-                        <Text style={stylesforViewTaskModal.header}>Description:</Text>
+                        <Text style={stylesforQATester.header}>Description:</Text>
                         <TextInput
-                            style={stylesforViewTaskModal.input}
+                            style={stylesforQATester.input}
                             value={updatedDescription}
                             onChangeText={setUpdatedDescription}
                             multiline
                             numberOfLines={4}
                         />
 
-                        <Text style={stylesforViewTaskModal.header}>Media Files:</Text>
-                        <TouchableOpacity onPress={handleSelectMedia} style={stylesforViewTaskModal.buttonMedia}>
-                            <Text style={stylesforViewTaskModal.mediaText}> + Upload Media Files</Text>
+                        <Text style={stylesforQATester.header}>Media Files:</Text>
+                        <TouchableOpacity onPress={handleSelectMedia} style={stylesforQATester.buttonMedia}>
+                            <Text style={stylesforQATester.mediaText}> + Upload Media Files</Text>
                         </TouchableOpacity>
                         {mediaFiles.length > 0 && (
-                            <View style={stylesforViewTaskModal.mediaContainer}>
+                            <View style={stylesforQATester.mediaContainer}>
                                 {mediaFiles.map((file, index) => (
                                     file.uri ? (
                                         <TouchableOpacity key={index} onPress={() => setImagePreview(file.uri)}>
-                                            <Image key={index} source={{ uri: file.uri }} style={stylesforViewTaskModal.mediaFile} />
+                                            <Image key={index} source={{ uri: file.uri }} style={stylesforQATester.mediaFile} />
                                         </TouchableOpacity>
                                     ) : (
                                         <Text key={index}>Invalid Media</Text>
@@ -424,12 +379,12 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
                         )}
                     </ScrollView>
 
-                    <View style={stylesforViewTaskModal.FooterButton}>
-                        <TouchableOpacity onPress={handleCompleteTask} style={[stylesforViewTaskModal.button, stylesforViewTaskModal.completeButton]}>
-                            <Text style={stylesforViewTaskModal.buttonText}>Completed</Text>
+                    <View style={stylesforQATester.FooterButton}>
+                        <TouchableOpacity onPress={handleCompleteTask} style={[stylesforQATester.button, stylesforQATester.completeButton]}>
+                            <Text style={stylesforQATester.buttonText}>Completed</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={handleSaveTask} style={[stylesforViewTaskModal.saveButton]} disabled={isSaving}>
-                            <Text style={stylesforViewTaskModal.buttonText}>{isSaving ? 'Saving...' : 'Save'}</Text>
+                        <TouchableOpacity onPress={handleSaveTask} style={[stylesforQATester.saveButton]} disabled={isSaving}>
+                            <Text style={stylesforQATester.buttonText}>{isSaving ? 'Saving...' : 'Save'}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -438,11 +393,11 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
             {/* Image Preview Modal */}
             {imagePreview && (
                 <Modal animationType="fade" transparent={true} visible={!!imagePreview} onRequestClose={closeImagePreview}>
-                    <View style={stylesforViewTaskModal.imagePreviewModal}>
-                        <TouchableOpacity style={stylesforViewTaskModal.closeImagePreview} onPress={closeImagePreview}>
+                    <View style={stylesforQATester.imagePreviewModal}>
+                        <TouchableOpacity style={stylesforQATester.closeImagePreview} onPress={closeImagePreview}>
                             <Ionicons name="close-circle" size={40} color="white" />
                         </TouchableOpacity>
-                        <Image source={{ uri: imagePreview }} style={stylesforViewTaskModal.imagePreview} />
+                        <Image source={{ uri: imagePreview }} style={stylesforQATester.imagePreview} />
                     </View>
                 </Modal>
             )}
@@ -450,4 +405,4 @@ const ViewTaskModal = ({ isVisible, task, sectionName, onClose, tags, users }) =
     );
 };
 
-export default ViewTaskModal;
+export default QATester;

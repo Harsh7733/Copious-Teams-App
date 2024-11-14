@@ -3,6 +3,7 @@ import { View, ActivityIndicator, Text } from 'react-native';
 import { getSections } from '../../Services/sectionServices';
 import { getTasksBySection } from '../../Services/TaskService';
 import TaskList from '../components/TaskList';
+import QAList from './QAList';
 
 const TaskManager = () => {
     const [sections, setSections] = useState([]);
@@ -45,6 +46,7 @@ const TaskManager = () => {
     return (
         <View>
             <TaskList tasks={tasks} sections={sections} />
+            <QAList tasks={tasks} sections={sections} />
         </View>
     );
 };

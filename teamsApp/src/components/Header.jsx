@@ -8,6 +8,7 @@ import AppVersionManagement from './AppVersionManagement';
 import Users from './Users';
 import { stylesforHeader } from '../../styles/styles';
 import CompletedTasks from './CompletedTasks';
+import QAList from './QAList';
 
 const Header = () => {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -40,7 +41,7 @@ const Header = () => {
       {selectedScreen === 'App Version Management' && <AppVersionManagement />}
       {selectedScreen === 'Users' && <Users />}
       {selectedScreen === 'Completed Tasks' && <CompletedTasks />}
-
+      {selectedScreen === 'QA / Tester' && <QAList />}
     </View>
   );
 };
