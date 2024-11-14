@@ -711,13 +711,12 @@ export const stylesforBuildList = StyleSheet.create({
 
 export const stylesforViewTaskModal = StyleSheet.create({
     overlay: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContainer: {
-        width: '90%',
+        width: '70%',
         borderRadius: 20,
         backgroundColor: 'white',
         padding: 30,
@@ -729,9 +728,25 @@ export const stylesforViewTaskModal = StyleSheet.create({
         shadowRadius: 20,
         marginLeft: 20,
         alignContent: 'center',
+        height:50,
+    },
+    modalMain: {
+        width: '70%',
+        borderRadius: 20,
+        backgroundColor: 'white',
+        padding: 30,
+        shadowOpacity: 0.2,
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowRadius: 20,
+        marginLeft: 20,
+        alignContent: 'center',
+        height:50,
     },
     scrollContainer: {
-        paddingBottom: 20,
+        paddingBottom: 200,
     },
     input: {
         borderWidth: 1,
