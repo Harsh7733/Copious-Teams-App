@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import Login from './src/components/Login';
+import SignUp from './src/components/SignUp';
 import AddTaskModal from './src/components/AddTaskModal';
 import AddSectionModal from './src/components/AddSectionModal';
 import AddBuildModal from './src/components/AddBuildModal';
@@ -7,17 +9,35 @@ import TaskList from './src/components/TaskList';
 import Header from './src/components/Header';
 import Footer from './src/components/Footer';
 import Home from './src/components/HomeComponent';
-import DailyReport from './src/components/DailyReport';  
+import DailyReport from './src/components/DailyReport';
 import { stylesforMain } from '../teamsApp/styles/styles';
 
 const Main = () => {
+  const [currentPage, setCurrentPage] = useState('login'); // 'login' or 'signup'
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [sections, setSections] = useState([]);
   const [builds, setBuilds] = useState([]);
-  const [showOptions, setShowOptions] = useState(false); 
+  const [showOptions, setShowOptions] = useState(false);
   const [activeScreen, setActiveScreen] = useState('home');
-  const [modalType, setModalType] = useState(''); 
+  const [modalType, setModalType] = useState('');
+
+  const handleLogin = () => {
+    setIsLoggedIn(true); 
+  };
+
+  const handleSignUp = () => {
+    setIsLoggedIn(true); 
+  };
+
+  const navigateToSignUp = () => {
+    setCurrentPage('signup');
+  };
+
+  const navigateToLogin = () => {
+    setCurrentPage('login');
+  };
 
   const addTask = (task) => {
     setTasks([...tasks, task]);
@@ -66,8 +86,20 @@ const Main = () => {
   };
 
   const toggleOptions = () => {
-    setShowOptions(!showOptions); 
+    setShowOptions(!showOptions);
   };
+
+  if (!isLoggedIn) {
+    return (
+      <View style={styles.container}>
+        {currentPage === 'login' ? (
+          <Login onLogin={handleLogin} onNavigateToSignUp={navigateToSignUp} />
+        ) : (
+          <SignUp onSignUp={handleSignUp} onNavigateToLogin={navigateToLogin} />
+        )}
+      </View>
+    );
+  }
 
   return (
     <View style={stylesforMain.container}>
@@ -76,7 +108,7 @@ const Main = () => {
         {activeScreen === 'home' ? (
           <Home />
         ) : activeScreen === 'dailyReport' ? (
-          <DailyReport onAddEntryClick={handleAddEntryClick} />  
+          <DailyReport onAddEntryClick={handleAddEntryClick} />
         ) : (
           <>
             <TaskList tasks={tasks} sections={sections} builds={builds} />
@@ -123,5 +155,9 @@ const Main = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+});
 
 export default Main;
