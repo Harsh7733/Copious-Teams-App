@@ -7,7 +7,7 @@ import TaskList from './src/components/TaskList';
 import Header from './src/components/Header';
 import Footer from './src/components/Footer';
 import Home from './src/components/HomeComponent';
-import DailyReport from './src/components/DailyReport';  // Import DailyReport component
+import DailyReport from './src/components/DailyReport';  
 import { stylesforMain } from '../teamsApp/styles/styles';
 
 const Main = () => {
@@ -15,9 +15,9 @@ const Main = () => {
   const [tasks, setTasks] = useState([]);
   const [sections, setSections] = useState([]);
   const [builds, setBuilds] = useState([]);
-  const [showOptions, setShowOptions] = useState(false); // State to toggle options visibility
+  const [showOptions, setShowOptions] = useState(false); 
   const [activeScreen, setActiveScreen] = useState('home');
-  const [modalType, setModalType] = useState(''); // State for which modal to show
+  const [modalType, setModalType] = useState(''); 
 
   const addTask = (task) => {
     setTasks([...tasks, task]);
@@ -62,12 +62,11 @@ const Main = () => {
   };
 
   const handleAddEntryClick = () => {
-    // Logic for adding a new entry (could open another modal for data input)
     alert('Add entry functionality to be implemented');
   };
 
   const toggleOptions = () => {
-    setShowOptions(!showOptions); // Toggle visibility of the options
+    setShowOptions(!showOptions); 
   };
 
   return (
