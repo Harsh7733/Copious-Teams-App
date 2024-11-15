@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { stylesforSidebar } from '../../styles/styles';
 
 const Sidebar = ({ isVisible, onClose, onSelectSection }) => {
-  const [slideAnim] = useState(new Animated.Value(-250)); 
+  const [slideAnim] = useState(new Animated.Value(-250));
 
   // Trigger the slide animation based on the visibility of the sidebar
   useEffect(() => {
