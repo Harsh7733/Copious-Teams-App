@@ -6,6 +6,8 @@ import { getUsers } from '../../Services/UserService';
 import { Picker } from '@react-native-picker/picker';
 import { stylesforDailyReport } from './../../styles/styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import jwtDecode from 'jwt-decode';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DailyReport = () => {
     const [reports, setReports] = useState([]);
@@ -13,11 +15,11 @@ const DailyReport = () => {
     const [status, setStatus] = useState('');
     const [userId, setUserId] = useState('');
     const [tasks, setTasks] = useState([]);
-    const [availableTasks, setAvailableTasks] = useState([]); 
+    const [availableTasks, setAvailableTasks] = useState([]);
     const [users, setUsers] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [customTask, setCustomTask] = useState(''); 
+    const [customTask, setCustomTask] = useState('');
 
     useEffect(() => {
         fetchReports();
@@ -44,6 +46,15 @@ const DailyReport = () => {
             console.error('Error fetching tasks:', error);
             Alert.alert('Error', 'Failed to fetch tasks');
         }
+
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setUserId(decodedToken.id);
+            setCreatedByUserName(decodedToken.userName);
+        } else {
+            console.error('No token found in local storage');
+        }
     };
 
     const fetchUsers = async () => {
@@ -57,7 +68,7 @@ const DailyReport = () => {
     };
 
     const handleCreateReport = async () => {
-        if (!taskName || !status || !tasks.length || !userId) {
+        if (!taskName || !status || !tasks.length) {
             Alert.alert('Validation Error', 'Please fill all the fields.');
             return;
         }
@@ -262,7 +273,7 @@ const DailyReport = () => {
                         </View>
 
                         {/* User Picker */}
-                        <Text style={stylesforDailyReport.header}>User Name :</Text>
+                        {/* <Text style={stylesforDailyReport.header}>User Name :</Text>
                         <View style={stylesforDailyReport.picker}>
                             <Picker
                                 selectedValue={userId}
@@ -280,7 +291,7 @@ const DailyReport = () => {
                                 size={25}
                                 style={stylesforDailyReport.icon}
                             />
-                        </View>
+                        </View> */}
 
                         {/* Buttons inside the Modal */}
                         <View style={stylesforDailyReport.modalButtonsContainer}>

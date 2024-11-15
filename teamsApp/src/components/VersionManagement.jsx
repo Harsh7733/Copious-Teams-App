@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Modal, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { createNewVersionManagementEntry, getAllVersionManagementEntries } from '../../Services/VersionManagementService';
-import { Picker } from '@react-native-picker/picker';
+// import { Picker } from '@react-native-picker/picker';
 import { getUsers } from '../../Services/UserService';
 import { stylesforVersionManagement } from '../../styles/styles';
+import jwtDecode from 'jwt-decode';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const VersionManagement = () => {
   const [entries, setEntries] = useState([]);
@@ -26,6 +28,15 @@ const VersionManagement = () => {
         console.error('Error fetching users:', error);
         alert('Failed to fetch users');
       }
+
+      const token = await AsyncStorage.getItem('token');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setUserId(decodedToken.id);
+            setCreatedByUserName(decodedToken.userName);
+        } else {
+            console.error('No token found in local storage');
+        }
     };
 
     const fetchEntries = async () => {
@@ -47,7 +58,7 @@ const VersionManagement = () => {
 
   // Handle form submission
   const handleCreateReport = async () => {
-    if (!userId || !technologyUsed || !currentVersion || !latestVersion) {
+    if (!technologyUsed || !currentVersion || !latestVersion) {
       alert('Please fill all fields');
       return;
     }
@@ -107,7 +118,7 @@ const VersionManagement = () => {
             />
 
             {/* User ID Picker */}
-            <Text style={stylesforVersionManagement.header}>Created By :</Text>
+            {/* <Text style={stylesforVersionManagement.header}>Created By :</Text>
             <View style={stylesforVersionManagement.picker}>
               <Picker
                 selectedValue={userId}
@@ -119,7 +130,7 @@ const VersionManagement = () => {
                   <Picker.Item key={user.id} label={user.userName} value={user.id} />
                 ))}
               </Picker>
-            </View>
+            </View> */}
 
             <Text style={stylesforVersionManagement.header}>Current Version :</Text>
             <TextInput

@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-native-community/datetimepicker": "^8.2.0",
     "@react-native-picker/picker": "^2.8.1",
     "@react-native/gradle-plugin": "^0.75.4",
@@ -17,6 +18,7 @@
     "@react-navigation/native-stack": "^6.11.0",
     "@react-navigation/stack": "^6.4.1",
     "axios": "^0.21.4",
+    "jwt-decode": "^3.1.2",
     "react": "18.3.1",
     "react-native": "0.75.4",
     "react-native-collapsible": "^1.6.2",

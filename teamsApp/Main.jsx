@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
 import Login from './src/components/Login';
 import SignUp from './src/components/SignUp';
+import WelcomeScreen from './src/components/WelcomeScreen'; // Import the new WelcomeScreen component
 import AddTaskModal from './src/components/AddTaskModal';
 import AddSectionModal from './src/components/AddSectionModal';
 import AddBuildModal from './src/components/AddBuildModal';
@@ -13,7 +14,7 @@ import DailyReport from './src/components/DailyReport';
 import { stylesforMain } from '../teamsApp/styles/styles';
 
 const Main = () => {
-  const [currentPage, setCurrentPage] = useState('login'); // 'login' or 'signup'
+  const [currentPage, setCurrentPage] = useState('welcome'); // Initial page is the welcome screen
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [tasks, setTasks] = useState([]);
@@ -23,30 +24,22 @@ const Main = () => {
   const [activeScreen, setActiveScreen] = useState('home');
   const [modalType, setModalType] = useState('');
 
-  // Function to handle login action
-  const handleLogin = () => {
+
+  const handleLogin = async() => {
     setIsLoggedIn(true); 
+    setCurrentPage('home'); 
   };
 
-  // Function to handle sign-up action
   const handleSignUp = () => {
-    // After sign-up, directly go to login page for verification
     setCurrentPage('login');
   };
 
-  // Function to simulate login after sign-up verification
-  const handleVerification = () => {
-    // Simulate login process (e.g., validate credentials)
-    setIsLoggedIn(true);
-    setCurrentPage('home');  // After login, navigate to the home page
-  };
-
   const navigateToSignUp = () => {
-    setCurrentPage('signup'); // Navigate to SignUp page
+    setCurrentPage('signup');
   };
 
   const navigateToLogin = () => {
-    setCurrentPage('login'); // Navigate to Login page
+    setCurrentPage('login');
   };
 
   const addTask = (task) => {
@@ -99,6 +92,14 @@ const Main = () => {
     setShowOptions(!showOptions);
   };
 
+  if (currentPage === 'welcome') {
+    return (
+      <View style={styles.container}>
+        <WelcomeScreen onNavigateToSignUp={navigateToSignUp} onNavigateToLogin={navigateToLogin} />
+      </View>
+    );
+  }
+
   if (!isLoggedIn) {
     return (
       <View style={styles.container}>
@@ -106,12 +107,6 @@ const Main = () => {
           <Login onLogin={handleLogin} onNavigateToSignUp={navigateToSignUp} />
         ) : (
           <SignUp onSignUp={handleSignUp} onNavigateToLogin={navigateToLogin} />
-        )}
-        {/* Add a verify button after sign-up */}
-        {currentPage === 'signup' && (
-          <TouchableOpacity onPress={handleVerification}>
-            <Text>Verify Sign Up and Login</Text>
-          </TouchableOpacity>
         )}
       </View>
     );

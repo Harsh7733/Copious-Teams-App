@@ -8,8 +8,10 @@ import { getTags, saveTag } from '../../Services/TagService';
 import { getSections } from '../../Services/SectionService';
 import { getUsers } from '../../Services/UserService';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import jwtDecode from 'jwt-decode';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
+const AddTaskModal = ({ visible, onClose, onSave, }) => {
     const [sectionID, setSectionID] = useState('');
     const [taskName, setTaskName] = useState('');
     const [description, setDescription] = useState('');
@@ -24,6 +26,7 @@ const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
     const [availableTags, setAvailableTags] = useState([]);
     const [selectedTag, setSelectedTag] = useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [userId, setUserId] = useState('');
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -98,6 +101,15 @@ const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
         } catch (error) {
             Alert.alert('Error', 'Failed to load users');
         }
+
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setUserId(decodedToken.id);
+            setCreatedByUserName(decodedToken.userName);
+        } else {
+            console.error('No token found in local storage');
+        }
     };
 
     const fetchTags = async () => {
@@ -115,6 +127,9 @@ const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
             fetchUsers();
             fetchTags();
         }
+
+
+
     }, [visible]);
 
     const handleTagSelect = (itemValue) => {
@@ -148,7 +163,7 @@ const AddTaskModal = ({ visible, onClose, onSave, userId, }) => {
 
     return (
         <Modal visible={visible} animationType="slide" transparent>
-            
+
             <View style={stylesforAddTaskModal.overlay}>
                 <View style={stylesforAddTaskModal.modalContainer}>
                     <ScrollView contentContainerStyle={stylesforAddTaskModal.scrollContainer}>
